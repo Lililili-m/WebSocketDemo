@@ -15,6 +15,9 @@ namespace NativeMessageTest
 
     public class SocketMessage
     {
+        [JsonProperty("clientId")]
+        public string ClientId { get; set; }
+
         [JsonProperty("action")]
         public string Action { get; set; }
 

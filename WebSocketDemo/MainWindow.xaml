@@ -37,12 +37,13 @@
                 </Rectangle>
 
                 <!-- 显示当前位置信息 -->
-                <TextBlock x:Name="PositionText" 
+                <Button x:Name="MessageButton" 
+                        Width="50" Height="20"
                           Canvas.Left="10" 
                           Canvas.Top="10" 
                           Background="White" 
                           Padding="5"
-                          Text="位置: X=0, Y=0, 缩放=1.0"/>
+                          Click="MessageButton_Click"/>
             </Canvas>
         </Grid>
 

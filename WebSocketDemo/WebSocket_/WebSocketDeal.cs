@@ -12,6 +12,8 @@ namespace NativeMessageTest
 {
     class WebSocketDeal : WebSocketBehavior
     {
+        private static readonly List<WebSocketDeal> _clients = new List<WebSocketDeal>();
+        
         public static event Action<ScrollData> OnScrollDataReceived;
         public static event Action<string> OnMessageReceived;
 
@@ -58,14 +60,32 @@ namespace NativeMessageTest
 
 
 
+        // 发送消息到所有客户端
+        public static void SendToAll(string message)
+        {
+            foreach (var client in _clients.ToList())
+            {
+                try
+                {
+                    client.Send(message);
+                }
+                catch
+                {
+                    _clients.Remove(client);
+                }
+            }
+        }
+
         protected override void OnOpen()
         {
             Console.WriteLine("[OnOpen] WebSocket连接已建立");
+            _clients.Add(this);
         }
 
         protected override void OnClose(CloseEventArgs e)
         {
             Console.WriteLine($"[OnClose] WebSocket连接已关闭: {e.Reason}");
+            _clients.Remove(this);
         }
 
         protected override void OnError(ErrorEventArgs e)

@@ -47,7 +47,8 @@ namespace WebSocketDemo
         {
             if (_lastScrollTime >= obj.Timestamp) return;
             _lastScrollTime = obj.Timestamp;
-            Console.WriteLine($"======={_lastScrollTime}    {}");
+            long unixTimestamp = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            Console.WriteLine($"======={_lastScrollTime}    {unixTimestamp}    {unixTimestamp - _lastScrollTime}");
             HandleScrollMessage(obj.ScrollX, obj.ScrollY);
         }
 
@@ -66,6 +67,22 @@ namespace WebSocketDemo
             {
                 Console.WriteLine($"滚动处理错误: {ex.Message}");
             }
+        }
+
+        private void MessageButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 发送简单消息到所有WebSocket客户端
+            var message = new
+            {
+                type = "test_message",
+                data = "Hello from C# Server!",
+                timestamp = DateTime.Now.ToString()
+            };
+            
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(message);
+            WebSocketDeal.SendToAll(json);
+            
+            Console.WriteLine("消息已发送: " + json);
         }
     }
 }
