@@ -61,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utils_\FileHelper.cs" />
     <Compile Include="WebSocket_\Data.cs" />
     <Compile Include="WebSocket_\NetworkService.cs" />
     <Compile Include="WebSocket_\WebSocketDeal.cs" />

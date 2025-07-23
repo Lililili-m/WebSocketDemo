@@ -42,6 +42,14 @@ namespace WebSocketDemo
         {
             _ns.Start();
             WebSocketDeal.OnScrollDataReceived += WebSocketDeal_OnScrollDataReceived;
+            WebSocketDeal.OnCanvasDataReceived += WebSocketDeal_OnCanvasDataReceived;
+        }
+
+        private void WebSocketDeal_OnCanvasDataReceived(long arg1, CanvasData arg2)
+        {
+            var base64String = arg2.Base64;
+            var result = FileHelper.SaveBase64WithAutoExtension(base64String, @"D:\l78z\Test\111\savePic");
+            Console.WriteLine($"======保存图片 {result}");
         }
 
         private void WebSocketDeal_OnScrollDataReceived(long clientId, ScrollData obj)

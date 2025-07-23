@@ -40,6 +40,15 @@ namespace NativeMessageTest
         public long Timestamp { get; set; }
     }
 
+    public class CanvasData
+    {
+        [JsonProperty("base64")]
+        public string Base64 { get; set; }
+
+        [JsonProperty("tabTitle")]
+        public string TabTitle { get; set; }
+    }
+
     /// <summary>
     /// 基础消息数据（用于简单字符串消息）
     /// </summary>

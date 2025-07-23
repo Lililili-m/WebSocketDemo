@@ -15,6 +15,7 @@ namespace NativeMessageTest
         private static readonly List<WebSocketDeal> _clients = new List<WebSocketDeal>();
         
         public static event Action<long, ScrollData> OnScrollDataReceived;
+        public static event Action<long, CanvasData> OnCanvasDataReceived;
         public static event Action<string> OnMessageReceived;
 
         protected override void OnMessage(MessageEventArgs e)
@@ -34,18 +35,17 @@ namespace NativeMessageTest
 
         private void HandleMessage(string action, long clientId, object data)
         {
+            if (!(data is JObject jObject)) return;
             switch (action)
             {
                 case "scroll":
-                    // 根据data的实际类型进行转换
-                    if (data is JObject jObject)
-                    {
-                        ScrollData scrollData = jObject.ToObject<ScrollData>();
-                        OnScrollDataReceived?.Invoke(clientId, scrollData);
-                        //Console.WriteLine($"[OnMessage] scroll {scrollData.ScrollX},{scrollData.ScrollY}");
-                    }
+                    ScrollData scrollData = jObject.ToObject<ScrollData>();
+                    OnScrollDataReceived?.Invoke(clientId, scrollData);
                     break;
-                // 可以继续添加其他Action类型
+                case "sendCanvasData":
+                    CanvasData canvasData = jObject.ToObject<CanvasData>();
+                    OnCanvasDataReceived?.Invoke(clientId, canvasData);
+                    break;
             }
         }
 
