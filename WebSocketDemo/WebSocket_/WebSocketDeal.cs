@@ -14,26 +14,17 @@ namespace NativeMessageTest
     {
         private static readonly List<WebSocketDeal> _clients = new List<WebSocketDeal>();
         
-        public static event Action<ScrollData> OnScrollDataReceived;
+        public static event Action<long, ScrollData> OnScrollDataReceived;
         public static event Action<string> OnMessageReceived;
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            //Console.WriteLine("[OnMessage]" + e.Data);
+            Console.WriteLine("[OnMessage]" + e.Data);
             
             try
             {
-                // 尝试直接解析为WebSocketMessage格式
-                var webSocketMessage = JsonConvert.DeserializeObject<WebSocketMessage>(e.Data);
-                if (webSocketMessage != null && !string.IsNullOrEmpty(webSocketMessage.Action))
-                {
-                    HandleMessage(webSocketMessage.Action, webSocketMessage.Data);
-                    return;
-                }
-
-                // 如果不是，尝试解析为包装的SocketData格式
                 SocketData data = JsonConvert.DeserializeObject<SocketData>(e.Data);
-                HandleMessage(data.Message.Action, data.Message.Data);
+                HandleMessage(data.Message.Action, data.Message.ClientId, data.Message.Data);
             }
             catch (Exception ex)
             {
@@ -41,7 +32,7 @@ namespace NativeMessageTest
             }
         }
 
-        private void HandleMessage(string action, object data)
+        private void HandleMessage(string action, long clientId, object data)
         {
             switch (action)
             {
@@ -50,7 +41,7 @@ namespace NativeMessageTest
                     if (data is JObject jObject)
                     {
                         ScrollData scrollData = jObject.ToObject<ScrollData>();
-                        OnScrollDataReceived?.Invoke(scrollData);
+                        OnScrollDataReceived?.Invoke(clientId, scrollData);
                         //Console.WriteLine($"[OnMessage] scroll {scrollData.ScrollX},{scrollData.ScrollY}");
                     }
                     break;

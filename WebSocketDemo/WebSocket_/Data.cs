@@ -16,7 +16,7 @@ namespace NativeMessageTest
     public class SocketMessage
     {
         [JsonProperty("clientId")]
-        public string ClientId { get; set; }
+        public long ClientId { get; set; }
 
         [JsonProperty("action")]
         public string Action { get; set; }
@@ -61,26 +61,5 @@ namespace NativeMessageTest
 
         [JsonProperty("title")]
         public string Title { get; set; }
-    }
-
-    /// <summary>
-    /// 完整的WebSocket消息格式
-    /// </summary>
-    public class WebSocketMessage
-    {
-        [JsonProperty("action")]
-        public string Action { get; set; }
-
-        [JsonProperty("data")]
-        public object Data { get; set; }
-
-        [JsonProperty("tabId")]
-        public int? TabId { get; set; }
-
-        [JsonProperty("url")]
-        public string Url { get; set; }
-
-        [JsonProperty("timestamp")]
-        public long Timestamp { get; set; }
     }
 }

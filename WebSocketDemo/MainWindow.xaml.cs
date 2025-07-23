@@ -26,6 +26,7 @@ namespace WebSocketDemo
         private ScaleTransform _scaleTransform = new ScaleTransform();
         private TranslateTransform _translateTransform = new TranslateTransform();
         private long _lastScrollTime = 0;
+        private long _clientId = 0;
 
         public MainWindow()
         {
@@ -43,12 +44,13 @@ namespace WebSocketDemo
             WebSocketDeal.OnScrollDataReceived += WebSocketDeal_OnScrollDataReceived;
         }
 
-        private void WebSocketDeal_OnScrollDataReceived(ScrollData obj)
+        private void WebSocketDeal_OnScrollDataReceived(long clientId, ScrollData obj)
         {
             if (_lastScrollTime >= obj.Timestamp) return;
             _lastScrollTime = obj.Timestamp;
-            long unixTimestamp = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
-            Console.WriteLine($"======={_lastScrollTime}    {unixTimestamp}    {unixTimestamp - _lastScrollTime}");
+            long unixTimestamp = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            //Console.WriteLine($"======={_lastScrollTime}    {unixTimestamp}    {unixTimestamp - _lastScrollTime}");
+            _clientId = clientId; //先在这里记录 clientId 验证可行性
             HandleScrollMessage(obj.ScrollX, obj.ScrollY);
         }
 
@@ -74,6 +76,7 @@ namespace WebSocketDemo
             // 发送简单消息到所有WebSocket客户端
             var message = new
             {
+                clientId = _clientId,
                 type = "test_message",
                 data = "Hello from C# Server!",
                 timestamp = DateTime.Now.ToString()
