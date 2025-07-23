@@ -5,8 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebSocketDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStyle="None"
+        WindowState="Maximized"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        Title="MainWindow">
     <Grid>
-        
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>-->
+
+        <!-- 状态栏 --><!--
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="LightGray" Height="40">
+            <TextBlock x:Name="StatusText" Text="等待连接..." Margin="10" VerticalAlignment="Center"/>
+            <Ellipse x:Name="StatusIndicator" Width="15" Height="15" Fill="Red" Margin="5" VerticalAlignment="Center"/>
+        </StackPanel>-->
+
+        <!-- 同步测试区域 -->
+        <Grid>
+            <Canvas x:Name="SyncCanvas">
+                <!-- 这个矩形将根据浏览器的滚动、缩放、移动进行同步 -->
+                <Rectangle x:Name="SyncRect" 
+                          Width="100" 
+                          Height="100" 
+                          Fill="Red" 
+                          Canvas.Left="900" 
+                          Canvas.Bottom="100">
+                </Rectangle>
+
+                <!-- 显示当前位置信息 -->
+                <TextBlock x:Name="PositionText" 
+                          Canvas.Left="10" 
+                          Canvas.Top="10" 
+                          Background="White" 
+                          Padding="5"
+                          Text="位置: X=0, Y=0, 缩放=1.0"/>
+            </Canvas>
+        </Grid>
+
+        <!-- 消息日志区域 --><!--
+        <ScrollViewer Grid.Row="2" Background="Black">
+            <TextBlock x:Name="LogText" 
+                      Foreground="Green" 
+                      FontFamily="Consolas" 
+                      FontSize="12" 
+                      Margin="5"
+                      Text="消息日志：&#10;"/>
+        </ScrollViewer>-->
     </Grid>
 </Window>
