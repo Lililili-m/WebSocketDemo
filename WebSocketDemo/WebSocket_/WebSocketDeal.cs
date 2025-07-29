@@ -46,9 +46,11 @@ namespace NativeMessageTest
                     CanvasData canvasData = jObject.ToObject<CanvasData>();
                     OnCanvasDataReceived?.Invoke(clientId, canvasData);
                     break;
+                case "ping":
+                    SendToAll($"{{\"action\":\"pong\"}}");
+                    break;
             }
         }
-
 
 
         // 发送消息到所有客户端
